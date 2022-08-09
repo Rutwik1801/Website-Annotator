@@ -1,0 +1,50 @@
+.main-comments--div{
+   padding: 20px;
+    position:absolute;
+    z-index:40;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    height:300px;
+    min-width:300px;
+    /* background-color:rgba(0,0,0,0.7); */
+    background-color: #2962ff;
+    backdrop-filter: blur;
+    overflow-y: scroll;
+}
+
+.btn-close{
+    color: red;
+    text-align: right;
+    margin-bottom: 5px;
+    right:0;
+}
+
+.add-comment--input{
+    /* display: block; */
+    width: 70%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid black;
+    color: white;
+    padding: 5px;
+}
+
+.add-comment--input::placeholder{
+    color: white;
+}
+
+
+.add-comment--btn{
+    border: 1px solid white;
+    background-color: white;
+    /* padding:2px 6px; */
+    height: 32px;
+    width: 32px;
+    font-size: 24px;
+    /* font-weight: bold; */
+    color: green;
+    border-radius: 20px;
+
+}

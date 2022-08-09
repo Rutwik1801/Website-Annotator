@@ -1,0 +1,70 @@
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  .react-rectangle-selection {
+    background-color: transparent;
+    border: 1px dashed white;
+    position: absolute;
+    animation-duration: 0.2s;
+    animation-name: fadeIn;
+    user-select: none;
+  }
+  
+  .react-rectangle-selection--fadeout {
+    animation-duration: 0.3s;
+    animation-name: fadeOut;
+    animation-fill-mode: forwards;
+  }
+  .comment-btn{
+    /* background-color: rgba(0,0,0,0.1); */
+    background-color: #2962ff;
+    color:white;
+    border:1px solid #2962ff;
+    padding: 8px 14px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    letter-spacing: 2px;
+    margin: 4px;
+    border-radius: 4px;
+  }
+
+  .comment-btn:hover{
+    background-color: greenyellow;
+    opacity: 0.5;
+    transition: all ease 0.4s;
+  }
+
+  .annotation-trigger--btn{
+    position:absolute;
+    z-index:10;
+    left:40%;
+    font-size:24px;
+    background-color: black;
+    color: white;
+    letter-spacing: 3px;
+    border-radius: 3px;
+    padding: 10px 20px;
+    backface-visibility: hidden;
+  }
+  .annotation-trigger--btn:hover{
+    transform: scale(1.2);
+    /* background-color: transparent; */
+    /* color: black; */
+    transition: all ease-out 0.4s;
+  }

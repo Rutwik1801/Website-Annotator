@@ -1,24 +1,39 @@
-import logo from './logo.svg';
+import React,{ useState } from 'react';
 import './App.css';
-
+import Annote from './annotation/ann';
 function App() {
+  const [coords,setCoords]=useState({
+   origin:{
+    x:0,
+    y:0
+   },
+   target:{
+    x:0,
+    y:0
+   }
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Annote
+       onSelect={(e,coords)=>{
+         setCoords({
+          origin:coords.origin,
+          target:coords.target
+         })
+       }}
+       coords={coords}
+       style={{
+        backgroundColor: "rgba(0,0,255,0.4)",
+        borderColor: "blue",
+        borderColor: "5px dotted blue"
+      }}
+    >
+    <div className="App" >
+          <h1>frefregrg</h1>
+        <p >fregregrg</p>
+          <h1 >trhth tgtrgrtgerg</h1> 
     </div>
+    </Annote>
   );
 }
 
