@@ -115,7 +115,8 @@ export default function Ann(props) {
         let temp=allComments;
         temp.push({commentBoxId:commentBoxId,
           uniqueCommentId:uniqueCommentId,
-          comment:comment});
+          comment:comment,
+        replies:[]});
         setAllComments(temp)
         setParticularComments(allComments.filter((e)=>{
           return(e.commentBoxId===commentBoxId);
@@ -138,13 +139,33 @@ export default function Ann(props) {
 
 
 
-
       // const handleCommentsBoxFlag=(idx)=>{
       //   // console.log(e)
       //   setViewCommentsFlag(true);
       //   setCommentId(idx)
       //   setCommentsFlag(true)
       // }
+
+      // close the comment box when the user clicks on x
+      const handleBoxCloseClick=()=>{
+        setViewCommentsFlag(false)
+      }
+// ==============================================
+
+// const handleAddRepliesToComment=(uniqueCommentId,replies)=>{
+//   let idx=-1;
+//   allComments.forEach((i)=>{
+//     if(i.uniqueCommentId==uniqueCommentId){
+//       idx=i;
+//     }
+//   })
+//   let temp=allComments
+//   temp[idx].replies=replies;
+//   setAllComments(temp);
+//   setParticularComments(allComments.filter((e)=>{
+//     return(e.commentBoxId===commentBoxId)
+//   }))
+// }
 
   return (
     <div>
@@ -181,34 +202,43 @@ export default function Ann(props) {
      {/* all the boxes created by the user will be displayed--------- */}
      {allBoxes.map((e,idx)=>{
         return (
-         <div>
-         <div key={idx}
-          style={{height:e.rectHt,
-          width:e.rectWt,
-          backgroundColor:"rgba(0,0,255,0.1)",
-          border:"2px dashed rgba(0,0,255,0.4)",
-          position:"absolute",
-          zIndex:10,
-          left:e.x,
-          top:e.y}}>
-         {!flag &&
-         <div>
-         {/* <button id={idx} className="comment-btn">Add Comment</button> */}
+          <div>
+            <div
+              key={idx}
+              style={{
+                height: e.rectHt,
+                width: e.rectWt,
+                backgroundColor: "rgba(0,0,255,0.1)",
+                border: "2px dashed rgba(0,0,255,0.4)",
+                position: "absolute",
+                zIndex: 10,
+                left: e.x,
+                top: e.y,
+              }}
+            >
+              {!flag && (
+                <div>
+                  {/* <button id={idx} className="comment-btn">Add Comment</button> */}
 
-         {/* view comments button */}
-         <button id={idx} className="comment-btn" 
-         onClick={
-          ()=>{
-            setViewCommentsFlag(true);
-            setCommentBoxId(idx)
-            // handleCommentsBoxFlag(idx)
-            }
-            }></button>
-         </div>}</div>
-        </div>
+                  {/* view comments button */}
+                  <button
+                    id={idx}
+                    className="comment-btn"
+                    onClick={() => {
+                      setViewCommentsFlag(true);
+                      setCommentBoxId(idx);
+                      // handleCommentsBoxFlag(idx)
+                    }}
+                  ></button>
+                </div>
+              )}
+            </div>
+          </div>
         );
      })}
      {viewCommentsFlag  && <CommentsBox 
+    //  handleAddRepliesToComment={handleAddRepliesToComment}
+     handleBoxCloseClick={handleBoxCloseClick}
      commentBoxId={commentBoxId} 
      comments={particularComments} 
      handleFilterComments={handleFilterComments} 

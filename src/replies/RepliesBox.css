@@ -1,14 +1,7 @@
-.main-comments--div{
+.main-replies--div{
     padding: 20px;
-     /* position:absolute;
-     z-index:80;
-     top:20%;
-     left:50%;
-     transform: translate(-50%,-50%); */
-     /* height:300px; */
      max-width:270px;
-     /* background-color:rgba(0,0,0,0.7); */
-     background-color: #2962ff;
+     background-color: black;
      backdrop-filter: blur;
      overflow-y: scroll;
  }
@@ -19,7 +12,7 @@
      margin-bottom: 5px;
      right:0;
  }
- 
+
  .add-comment--input{
      /* display: block; */
      width: 70%;
