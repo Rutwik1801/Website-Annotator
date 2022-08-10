@@ -27,15 +27,20 @@ export default function CommentsBox(props) {
   const handleResolveClick = (e) => {
     props.handleResolveComments(props.commentBoxId, e.target.id);
   };
+
+  // when user clicks the view replies button
   const handleViewRepliesClick = () => {
     setReplyFlag(true);
     console.log(replyFlag);
   };
 
+  // =======================
+
   //  add reply to all reply and particular reply
-  const handleFilterReplies = (uniqueCommentId, uniqueReplyId, reply) => {
+  const handleFilterReplies = (uniqueCommentId, uniqueReplyId, reply,commentBoxId) => {
     let temp = allReplies;
     temp.push({
+      commentBoxId:commentBoxId,
       uniqueCommentId: uniqueCommentId,
       uniqueReplyId: uniqueReplyId,
       reply: reply,
@@ -43,7 +48,7 @@ export default function CommentsBox(props) {
     setAllReplies(temp);
     setParticularReplies(
       allReplies.filter((e) => {
-        return e.uniqueCommentId === uniqueCommentId;
+        return (e.uniqueCommentId === uniqueCommentId && e.commentBoxId===props.commentBoxId);
       })
     );
     // add updated replies to replies array in comment object

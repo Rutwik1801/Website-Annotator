@@ -15,7 +15,7 @@ export default function RepliesBox(props) {
   // add comment to allComments array and also show the comments of currently selected box
   const handleClick = (e) => {
     // uuidv4() to create unique id for each comment
-    props.handleFilterReplies(props.uniqueCommentId, reply, uuidv4());
+    props.handleFilterReplies(props.uniqueCommentId, reply, uuidv4(),props.commentBoxId);
     // ==========================
   };
   // =============================================
@@ -52,7 +52,7 @@ export default function RepliesBox(props) {
               <p>{idx}</p>
               <p>{props.uniqueCommentId}</p>
               <p>{e.uniqueCommentId}</p>
-              <button>View Replies</button>
+              {/* <button>View Replies</button> */}
             </div>
           );
         })}
