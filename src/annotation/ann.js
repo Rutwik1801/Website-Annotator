@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import "./annote.css"
 import CommentsBox from '../comments/commentsBox';
-import { SendCommentData } from '../utils/AsyncFunctions';
+import { SendCommentData,GetCommentData } from '../utils/AsyncFunctions';
 
 
 export default function Ann(props) {
@@ -115,14 +115,17 @@ export default function Ann(props) {
 
   //  function to filter comments according to the annotation box selected
       const handleFilterComments= async (id,comment,uniqueCommentId)=>{
-        let temp=allComments;
-        temp.push({commentBoxId:commentBoxId,
-          uniqueCommentId:uniqueCommentId,
-          comment:comment,
-        replies:[]});
-        setAllComments(temp)
-        SendCommentData(temp);
-        setParticularComments(allComments.filter((e)=>{
+        // let temp=allComments;
+        // temp.push({commentBoxId:commentBoxId,
+        //   uniqueCommentId:uniqueCommentId,
+        //   comment:comment,
+        // replies:[]});
+        // setAllComments(temp)
+        SendCommentData(id,comment,uniqueCommentId,commentBoxId);
+        let data=await (GetCommentData())
+        setAllComments(data)
+        console.log(allComments)
+        setParticularComments(data.filter((e)=>{
           return(e.commentBoxId===commentBoxId);
         }));
       }

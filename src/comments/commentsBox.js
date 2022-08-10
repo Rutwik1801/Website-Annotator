@@ -17,7 +17,7 @@ export default function CommentsBox(props) {
   };
 
   // add comment to allComments array and also show the comments of currently selected box
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     // uuidv4() to create unique id for each comment
     props.handleFilterComments(props.commentBoxId, comment, uuidv4());
     // ==========================
