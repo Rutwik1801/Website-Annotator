@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import RepliesBox from '../replies/RepliesBox';
+import { GetReplyData, SendReplyData } from '../utils/AsyncFunctions';
 import "./commentsBox.css"
 
 export default function CommentsBox(props) {
@@ -37,19 +38,18 @@ export default function CommentsBox(props) {
   // =======================
 
   //  add reply to all reply and particular reply
-  const handleFilterReplies = (uniqueCommentId, uniqueReplyId, reply,commentBoxId) => {
-    let temp = allReplies;
-    temp.push({
-      commentBoxId:commentBoxId,
-      uniqueCommentId: uniqueCommentId,
-      uniqueReplyId: uniqueReplyId,
-      reply: reply,
-    });
-    setAllReplies(temp);
+  const handleFilterReplies = async (uniqueCommentId, uniqueReplyId, reply,commentBoxId) => {
+    // send reply to firbase
+    SendReplyData(uniqueCommentId, uniqueReplyId, reply,commentBoxId)
+    // ================================
+    // get all replies from firebase
+    let replyDBData=await GetReplyData();
+    setAllReplies(replyDBData);
     setParticularReplies(
-      allReplies.filter((e) => {
+      replyDBData.filter((e) => {
         return (e.uniqueCommentId === uniqueCommentId && e.commentBoxId===props.commentBoxId);
       })
+      // ======================================
     );
     // add updated replies to replies array in comment object
     // props.handleAddRepliesToComment(uniqueCommentId,particularReplies,props.commentBoxId)
@@ -99,7 +99,7 @@ export default function CommentsBox(props) {
                   <RepliesBox
                     commentBoxId={props.commentBoxId}
                     handleRepliesBoxClose={handleRepliesBoxClose}
-                    uniqueCommentId={props.uniqueCommentId}
+                    uniqueCommentId={e.uniqueCommentId}
                     replies={particularReplies}
                     handleFilterReplies={handleFilterReplies}
                   />

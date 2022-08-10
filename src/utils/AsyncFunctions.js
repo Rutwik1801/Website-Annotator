@@ -46,3 +46,27 @@ export const GetCommentData=async (id,comment,uniqueCommentId,commentBoxId)=>{
     });
     return temp;
 }
+
+export const SendReplyData=async (uniqueCommentId, uniqueReplyId, reply,commentBoxId)=>{
+  try {
+      const docRef = await addDoc(collection(db, "replies"), {
+        commentBoxId:commentBoxId,
+        uniqueCommentId: uniqueCommentId,
+        uniqueReplyId: uniqueReplyId,
+        reply: reply,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+}
+
+export const GetReplyData=async ()=>{
+
+  const querySnapshot = await getDocs(collection(db, "replies"));
+  let temp=[]
+  querySnapshot.forEach((doc) => {
+    temp.push(doc.data());
+  });
+  return temp;
+}
