@@ -31,6 +31,7 @@
     animation-fill-mode: forwards;
   }
   .comment-btn{
+    font-family: monospace;
     /* background-color: rgba(0,0,0,0.1); */
     background-color: #2962ff;
     color:white;
@@ -39,9 +40,11 @@
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 1px 2px 9px rgba(0,0,0,0.4);
     letter-spacing: 2px;
     margin: 4px;
-    border-radius: 4px;
+    /* border-radius: 4px; */
   }
 
   .comment-btn:hover{
@@ -51,6 +54,7 @@
   }
 
   .annotation-trigger--btn{
+    font-family: monospace;
     position:absolute;
     position: fixed;
     z-index:400;

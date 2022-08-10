@@ -33,7 +33,7 @@ export default function RepliesBox(props) {
       <button className="btn-close" onClick={handleRepliesBoxClose}>
         X
       </button>
-      <div>
+      <div style={{overflow:"hidden"}}>
         <input
           className="add-comment--input"
           type="text"
@@ -41,13 +41,13 @@ export default function RepliesBox(props) {
           onChange={handleChange}
         />
         <button className="add-comment--btn" onClick={handleClick}>
-          Add reply
+          Post Reply
         </button>
       </div>
       <div>
         {props.replies && props.replies.map((e, idx) => {
           return (
-            <div key={idx} style={{ backgroundColor: "#eee" ,padding:"5px 10px",margin:"5px",borderRadius:"5px"}}>
+            <div key={idx} style={{ backgroundColor: "#FCF8E8" ,padding:"5px 10px",margin:"5px",borderRadius:"5px",letterSpacing:"2px"}}>
               <p>{e.reply}</p>
             </div>
           );

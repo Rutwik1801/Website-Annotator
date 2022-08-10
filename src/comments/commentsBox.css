@@ -1,4 +1,5 @@
 .main-comments--div{
+    font-family: monospace;
    padding: 20px;
     position:absolute;
     z-index:40;
@@ -8,7 +9,7 @@
     height:500px;
     min-width:400px;
     /* background-color:rgba(0,0,0,0.7); */
-    background-color: white;
+    background-color: #FCF8E8;
     border: 1px solid #2962ff;
     backdrop-filter: blur;
     overflow-y: scroll;
@@ -23,6 +24,7 @@
 }
 
 .add-comment--input{
+    font-family: monospace;
     width: 100%;
     margin-bottom: 1px;
     background-color: transparent;
@@ -34,7 +36,8 @@
 
 
 .resolve--btn{
-    background-color:olivedrab;
+    font-family: monospace;
+    background-color:#9AE66E;
     border: none;
     color: white;
     letter-spacing: 2px;
@@ -43,9 +46,10 @@
 }
 
 .view-replies--btn{
-    background-color:#6666;
+    font-family: monospace;
+    background-color:#A2CDCD;
     border: none;
-    color: black;
+    color: #333;
     letter-spacing: 2px;
     border-radius: 4px;
     padding: 6px 10px;

@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import "./annote.css"
 import CommentsBox from '../comments/commentsBox';
-import { SendCommentData,GetCommentData, SendBoxData, GetBoxData } from '../utils/AsyncFunctions';
+import { SendCommentData,GetCommentData, SendBoxData, GetBoxData, DeleteComment } from '../utils/AsyncFunctions';
 
 export default function Ann(props) {
 
@@ -127,10 +127,16 @@ export default function Ann(props) {
 // ==================================================================
 
 // delete/resolve a comment
-  const handleResolveComments=(commentBoxId,uniqueCommentId)=>{
+  const handleResolveComments=async (commentBoxId,uniqueCommentId)=>{
+
+    // DeleteComment(commentBoxId,uniqueCommentId);
+    // let data=await GetCommentData();
     setAllComments(allComments.filter((e)=>{
       return(e.uniqueCommentId!==uniqueCommentId);
     }));  
+    // setAllComments(data)
+    // console.log("=====")
+    // console.log(data)
     setParticularComments(allComments.filter((e)=>{
       return(e.commentBoxId===commentBoxId);
     }));   

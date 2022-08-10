@@ -1,4 +1,4 @@
-import { collection, addDoc,getDocs,doc } from "firebase/firestore"; 
+import { collection, addDoc,getDocs,doc,deleteDoc } from "firebase/firestore"; 
 import { db } from "./firebase";
 
 
@@ -29,7 +29,6 @@ export const SendCommentData=async (id,comment,uniqueCommentId,commentBoxId)=>{
          commentBoxId:commentBoxId,
            uniqueCommentId:uniqueCommentId,
           comment:comment,
-         replies:[]
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
@@ -69,4 +68,9 @@ export const GetReplyData=async ()=>{
     temp.push(doc.data());
   });
   return temp;
+}
+
+export const DeleteComment=async (commentBoxId,uniqueCommentId)=>{
+  await deleteDoc(doc(db, "comments", uniqueCommentId));
+
 }

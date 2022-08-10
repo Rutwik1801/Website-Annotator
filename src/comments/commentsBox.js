@@ -38,16 +38,24 @@ export default function CommentsBox(props) {
   // =======================
 
   //  add reply to all reply and particular reply
-  const handleFilterReplies = async (uniqueCommentId, reply, uniqueReplyId,commentBoxId) => {
+  const handleFilterReplies = async (
+    uniqueCommentId,
+    reply,
+    uniqueReplyId,
+    commentBoxId
+  ) => {
     // send reply to firbase
-    SendReplyData(uniqueCommentId, uniqueReplyId, reply,commentBoxId)
+    SendReplyData(uniqueCommentId, uniqueReplyId, reply, commentBoxId);
     // ================================
     // get all replies from firebase
-    let replyDBData=await GetReplyData();
+    let replyDBData = await GetReplyData();
     setAllReplies(replyDBData);
     setParticularReplies(
       replyDBData.filter((e) => {
-        return (e.uniqueCommentId === uniqueCommentId && e.commentBoxId===props.commentBoxId);
+        return (
+          e.uniqueCommentId === uniqueCommentId &&
+          e.commentBoxId === props.commentBoxId
+        );
       })
       // ======================================
     );
@@ -72,7 +80,7 @@ export default function CommentsBox(props) {
       <button className="btn-close" onClick={handleBoxCloseClick}>
         X
       </button>
-      <div>
+      <div style={{overflow:"hidden"}}>
         <input
           className="add-comment--input"
           type="text"
@@ -80,13 +88,13 @@ export default function CommentsBox(props) {
           onChange={handleChange}
         />
         <button className="add-comment--btn" onClick={handleClick}>
-          Add Comment
+          Post Comment
         </button>
       </div>
       <div>
         {props.comments.map((e, idx) => {
           return (
-            <div key={idx} style={{ backgroundColor: "#eee",padding:"5px 15px 15px 15px",marginTop:"10px",borderRadius:"5px" }}>
+            <div key={idx} style={{ backgroundColor: "#eee",padding:"5px 15px 15px 15px",marginTop:"10px",borderRadius:"5px",letterSpacing:"2px" }}>
               <p>{e.comment}</p>
               <p>{props.commentBoxId}</p>
               <p>{e.uniqueCommentId}</p>
