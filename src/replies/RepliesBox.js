@@ -41,18 +41,14 @@ export default function RepliesBox(props) {
           onChange={handleChange}
         />
         <button className="add-comment--btn" onClick={handleClick}>
-          +
+          Add reply
         </button>
       </div>
       <div>
         {props.replies && props.replies.map((e, idx) => {
           return (
-            <div key={idx} style={{ backgroundColor: "#eee" }}>
+            <div key={idx} style={{ backgroundColor: "#eee" ,padding:"5px 10px",margin:"5px",borderRadius:"5px"}}>
               <p>{e.reply}</p>
-              <p>{idx}</p>
-              <p>{props.uniqueCommentId}</p>
-              <p>{e.uniqueCommentId}</p>
-              {/* <button>View Replies</button> */}
             </div>
           );
         })}

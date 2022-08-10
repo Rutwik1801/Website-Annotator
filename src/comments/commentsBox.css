@@ -5,12 +5,14 @@
     top:50%;
     left:50%;
     transform: translate(-50%,-50%);
-    height:300px;
-    min-width:300px;
+    height:500px;
+    min-width:400px;
     /* background-color:rgba(0,0,0,0.7); */
-    background-color: #2962ff;
+    background-color: white;
+    border: 1px solid #2962ff;
     backdrop-filter: blur;
     overflow-y: scroll;
+    border-radius: 10px;
 }
 
 .btn-close{
@@ -21,30 +23,31 @@
 }
 
 .add-comment--input{
-    /* display: block; */
-    width: 70%;
+    width: 100%;
+    margin-bottom: 1px;
     background-color: transparent;
     outline: none;
     border: none;
-    border-bottom: 2px solid black;
-    color: white;
+    border-bottom: 3px solid black;
     padding: 5px;
 }
 
-.add-comment--input::placeholder{
+
+.resolve--btn{
+    background-color:olivedrab;
+    border: none;
     color: white;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    padding: 6px 10px;
 }
 
-
-.add-comment--btn{
-    border: 1px solid white;
-    background-color: white;
-    /* padding:2px 6px; */
-    height: 32px;
-    width: 32px;
-    font-size: 24px;
-    /* font-weight: bold; */
-    color: green;
-    border-radius: 20px;
-
+.view-replies--btn{
+    background-color:#6666;
+    border: none;
+    color: black;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-right: 10px;
 }

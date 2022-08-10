@@ -38,7 +38,7 @@ export default function CommentsBox(props) {
   // =======================
 
   //  add reply to all reply and particular reply
-  const handleFilterReplies = async (uniqueCommentId, uniqueReplyId, reply,commentBoxId) => {
+  const handleFilterReplies = async (uniqueCommentId, reply, uniqueReplyId,commentBoxId) => {
     // send reply to firbase
     SendReplyData(uniqueCommentId, uniqueReplyId, reply,commentBoxId)
     // ================================
@@ -80,18 +80,18 @@ export default function CommentsBox(props) {
           onChange={handleChange}
         />
         <button className="add-comment--btn" onClick={handleClick}>
-          +
+          Add Comment
         </button>
       </div>
       <div>
         {props.comments.map((e, idx) => {
           return (
-            <div key={idx} style={{ backgroundColor: "#eee" }}>
+            <div key={idx} style={{ backgroundColor: "#eee",padding:"5px 15px 15px 15px",marginTop:"10px",borderRadius:"5px" }}>
               <p>{e.comment}</p>
               <p>{props.commentBoxId}</p>
               <p>{e.uniqueCommentId}</p>
-              <button onClick={handleViewRepliesClick}>View Replies</button>
-              <button id={e.uniqueCommentId} onClick={handleResolveClick}>
+              <button className='view-replies--btn' onClick={handleViewRepliesClick}>View Replies</button>
+              <button id={e.uniqueCommentId} className="resolve--btn" onClick={handleResolveClick}>
                 Resolve
               </button>
               <div>

@@ -52,8 +52,10 @@
 
   .annotation-trigger--btn{
     position:absolute;
-    z-index:10;
-    left:40%;
+    position: fixed;
+    z-index:400;
+    left:5%;
+    top: 90%;
     font-size:24px;
     background-color: black;
     color: white;
