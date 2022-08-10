@@ -1,10 +1,10 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import "./annote.css"
 import CommentsBox from '../comments/commentsBox';
-import { SendCommentData,GetCommentData } from '../utils/AsyncFunctions';
-
+import { SendCommentData,GetCommentData, SendBoxData, GetBoxData } from '../utils/AsyncFunctions';
 
 export default function Ann(props) {
+
     const [animationInProgress,setAnimationInProgress]=useState();
     const [viewCommentsFlag,setViewCommentsFlag]=useState(false)
     // id of annotation box as a whole
@@ -21,6 +21,12 @@ export default function Ann(props) {
     //==========
     let [allBoxes,setAllBoxes]=useState([]);
     //==========
+
+// useEffect(()=>{
+//   GetBoxData()
+// },[])
+   
+
 
    const handleTransformBox=()=> {
         if(flag){
@@ -39,28 +45,20 @@ export default function Ann(props) {
       }
 
 
-     const closeSelectionBox=()=> {
+     const closeSelectionBox=async ()=> {
         if(flag){
-        // black rectangle dimensions-------------
-      //   this.setState({flag:true,rectHt: Math.abs(
-      //     this.state.selectionBoxTarget[1] - this.state.selectionBoxOrigin[1] - 1
-      //   ),
-      //  rectWt: Math.abs(
-      //     this.state.selectionBoxTarget[0] - this.state.selectionBoxOrigin[0] - 1
-      //   ),
-      // })
-      // storing all the selected rectangles-----------
-      let temp=allBoxes;
-      temp.push({flag:true,rectHt: Math.abs(
-        selectionBoxTarget[1] -selectionBoxOrigin[1] - 1
-      ),
-     rectWt: Math.abs(
-        selectionBoxTarget[0] -selectionBoxOrigin[0] - 1
-      ),
-      x:selectionBoxOrigin[0],
-      y:selectionBoxOrigin[1]
-    })
-    setAllBoxes(temp);  
+      // storing all the selected rectangles----------
+    SendBoxData({flag:true,rectHt: Math.abs(
+      selectionBoxTarget[1] -selectionBoxOrigin[1] - 1
+    ),
+   rectWt: Math.abs(
+      selectionBoxTarget[0] -selectionBoxOrigin[0] - 1
+    ),
+    x:selectionBoxOrigin[0],
+    y:selectionBoxOrigin[1]
+  })
+  let dbBoxes=await GetBoxData()
+    setAllBoxes(dbBoxes);  
       // -------------
       //   ------------------------------------
       if (props.onMouseUp) props.onMouseUp();
@@ -115,17 +113,14 @@ export default function Ann(props) {
 
   //  function to filter comments according to the annotation box selected
       const handleFilterComments= async (id,comment,uniqueCommentId)=>{
-        // let temp=allComments;
-        // temp.push({commentBoxId:commentBoxId,
-        //   uniqueCommentId:uniqueCommentId,
-        //   comment:comment,
-        // replies:[]});
-        // setAllComments(temp)
+        // send data to firebase
         SendCommentData(id,comment,uniqueCommentId,commentBoxId);
-        let data=await (GetCommentData())
-        setAllComments(data)
-        console.log(allComments)
-        setParticularComments(data.filter((e)=>{
+        // ================
+        // get data from firebase
+        let allDBComments=await (GetCommentData())
+        // ===========================
+        setAllComments(allDBComments)
+        setParticularComments(allDBComments.filter((e)=>{
           return(e.commentBoxId===commentBoxId);
         }));
       }
