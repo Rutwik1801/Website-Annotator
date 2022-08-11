@@ -1,6 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import "./annote.css"
 import CommentsBox from '../comments/commentsBox';
+import { collection, addDoc,getDocs,doc,deleteDoc } from "firebase/firestore"; 
+import { db } from '../utils/firebase';
 import { SendCommentData,GetCommentData, SendBoxData, GetBoxData, DeleteComment } from '../utils/AsyncFunctions';
 
 export default function Ann(props) {
@@ -18,14 +20,23 @@ export default function Ann(props) {
     const [selectionBoxOrigin,setSelectionBoxOrigin]=useState([0,0]);
     const [selectionBoxTarget,setSelectionBoxTarget]=useState([0,0]);
     const [animation,setAnimation]=useState("");
-    //==========
     let [allBoxes,setAllBoxes]=useState([]);
-    //==========
 
-// useEffect(()=>{
-//   GetBoxData()
-// },[])
-   
+
+// load all boxes when the site loads
+useEffect(()=>{
+  const gets=async()=>{
+    const querySnapshot = await getDocs(collection(db, "boxes"));
+    let temp=[]
+    querySnapshot.forEach((doc) => {
+      temp.push(doc.data());
+    });
+    setAllBoxes(temp)
+  }
+  // return temp;
+gets();
+},[allBoxes])
+  //  =============================
 
 
    const handleTransformBox=()=> {
@@ -160,21 +171,6 @@ export default function Ann(props) {
       }
 // ==============================================
 
-// const handleAddRepliesToComment=(uniqueCommentId,replies)=>{
-//   let idx=-1;
-//   allComments.forEach((i)=>{
-//     if(i.uniqueCommentId==uniqueCommentId){
-//       idx=i;
-//     }
-//   })
-//   let temp=allComments
-//   temp[idx].replies=replies;
-//   setAllComments(temp);
-//   setParticularComments(allComments.filter((e)=>{
-//     return(e.commentBoxId===commentBoxId)
-//   }))
-// }
-
   return (
     <div>
     <div
@@ -244,7 +240,7 @@ export default function Ann(props) {
           </div>
         );
      })}
-     { <CommentsBox 
+     {viewCommentsFlag && <CommentsBox 
     //  handleAddRepliesToComment={handleAddRepliesToComment}
      handleBoxCloseClick={handleBoxCloseClick}
      commentBoxId={commentBoxId} 

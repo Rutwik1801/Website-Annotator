@@ -15,35 +15,33 @@ export default function CommentsBox(props){
     const handleChange = (e) => {
       setComment(e.target.value);
     };
-  // useEffect(()=>{
-  //       const querySnapshot= getDocs(collection(db, "comments"));
-  //         querySnapshot.forEach((e)=>{
-  //           setComments(e.data())
-  //           console.log(e.data())
-  //         })
-  // },[]);
-  const handleClick=async ()=>{
-    const querySnapshot= await getDocs(collection(db, "comments"));
-    let temp=[];
-    querySnapshot.forEach((e)=>{
-      temp.push(e.data());
-      // setComments(e.data())
-      // console.log(e.data())
-    })
-    setComments(temp)
-    console.log(comments)
-  }
+
+    // load all comments when site loads
+  useEffect(()=>{
+    const gets=async()=>{
+      const querySnapshot= await getDocs(collection(db, "comments"));
+      let temp=[];
+      querySnapshot.forEach((e)=>{
+        if(e.commentBoxId===props.commentBoxId)
+        temp.push(e.data());
+      })
+      setComments(temp)
+      console.log(comments)
+    }
+    gets();
+  },[comments]);
+// =============================
+// async call to send typed comment
   const handleSendComment=async (e)=>{
     e.preventDefault();
-    // console.log(comment)
-    SendCommentData(comment)
+    SendCommentData(comment,props.commentBoxId,uuidv4())
   }
+  // ===========================
   return (
     <div className='main-comments--div'>
          <button className="btn-close" onClick={handleBoxCloseClick}>
         X
       </button>
-      <button onClick={handleClick}>fff</button>
       <form onSubmit={handleSendComment}>
       <input
           className="add-comment--input"
