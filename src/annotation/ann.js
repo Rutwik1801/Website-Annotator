@@ -244,7 +244,7 @@ export default function Ann(props) {
           </div>
         );
      })}
-     {viewCommentsFlag  && <CommentsBox 
+     { <CommentsBox 
     //  handleAddRepliesToComment={handleAddRepliesToComment}
      handleBoxCloseClick={handleBoxCloseClick}
      commentBoxId={commentBoxId} 

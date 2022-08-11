@@ -9,7 +9,7 @@
     height:500px;
     min-width:400px;
     /* background-color:rgba(0,0,0,0.7); */
-    background-color: #FCF8E8;
+    background-color: white;
     border: 1px solid #2962ff;
     backdrop-filter: blur;
     overflow-y: scroll;
@@ -55,3 +55,34 @@
     padding: 6px 10px;
     margin-right: 10px;
 }
+.add-comment--input{
+    font-family: monospace;
+     /* display: block; */
+     width: 100%;
+     background-color: transparent;
+     outline: none;
+     border: none;
+     border-bottom: 4px solid black;
+     color: black;
+     padding: 5px;
+ }
+ 
+ .add-comment--input::placeholder{
+    font-family: monospace;
+     color: black;
+ }
+ 
+ ::-webkit-scrollbar{
+    display: none;
+ }
+ .add-comment--btn{
+    font-family: monospace;
+     border: none;
+     background-color: #2962ff;
+     font-size: 18px;
+     padding: 15px 8px 15px 8px;
+     letter-spacing: 1px;
+     color: white;
+     width: 100%;
+  border-radius: 0 0 5px 5px;
+ }
