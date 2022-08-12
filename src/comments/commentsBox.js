@@ -22,14 +22,14 @@ export default function CommentsBox(props){
       const querySnapshot= await getDocs(collection(db, "comments"));
       let temp=[];
       querySnapshot.forEach((e)=>{
-        if(e.commentBoxId===props.commentBoxId)
+        if(e.data().commentBoxId===props.commentBoxId)
         temp.push(e.data());
       })
       setComments(temp)
       console.log(comments)
     }
     gets();
-  },[comments]);
+  },[]);
 // =============================
 // async call to send typed comment
   const handleSendComment=async (e)=>{
