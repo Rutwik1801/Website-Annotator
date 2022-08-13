@@ -23,12 +23,15 @@ export const GetBoxData=async ()=>{
     return temp;
 }
 
-export const SendCommentData=async (comment,commentBoxId,uniqueCommentId)=>{
+export const SendCommentData=async (comment,commentBoxId,uniqueCommentId,uid,userName,photoURL)=>{
     try {
         const docRef = await addDoc(collection(db, "comments"), {
          commentBoxId:commentBoxId,
            uniqueCommentId:uniqueCommentId,
           comment:comment,
+          userId:uid,
+          userName:userName,
+          photoURL:photoURL
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {

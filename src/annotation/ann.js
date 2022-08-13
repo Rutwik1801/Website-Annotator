@@ -293,6 +293,7 @@ const handleSignOut=()=>{
         })}
         {viewCommentsFlag && (
           <CommentsBox
+          user={user}
             handleBoxCloseClick={handleBoxCloseClick}
             commentBoxId={commentBoxId}
             comments={particularComments}

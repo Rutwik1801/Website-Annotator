@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { getDocs,collection } from 'firebase/firestore';
-import { db } from '../utils/firebase';
+import { getDocs,collection, orderBy } from 'firebase/firestore';
+import { auth, db } from '../utils/firebase';
 import "./commentsBox.css";
 import { SendCommentData } from '../utils/AsyncFunctions';
 
@@ -19,14 +19,14 @@ export default function CommentsBox(props){
     // load all comments when site loads
   useEffect(()=>{
     const gets=async()=>{
-      const querySnapshot= await getDocs(collection(db, "comments"));
+      const querySnapshot= await getDocs(collection(db, "comments"),orderBy("createdAt","desc"));
       let temp=[];
       querySnapshot.forEach((e)=>{
         if(e.data().commentBoxId===props.commentBoxId)
         temp.push(e.data());
       })
       setComments(temp)
-      console.log(comments)
+      console.log(temp)
       console.log("this one comments")
     }
     gets();
@@ -35,7 +35,7 @@ export default function CommentsBox(props){
 // async call to send typed comment
   const handleSendComment=async (e)=>{
     e.preventDefault();
-    SendCommentData(comment,props.commentBoxId,uuidv4())
+    SendCommentData(comment,props.commentBoxId,uuidv4(),props.user.uid,props.user.displayName,props.user.photoURL)
   }
   // ===========================
   return (
@@ -55,24 +55,22 @@ export default function CommentsBox(props){
           Post Comment
         </button>
       </form>
-      {comments.map(({id,comment})=>{
+      <div style={{display:"flex",flexDirection:"column-reverse",alignItems:"flex-start"}}>
+      {comments.map((commentObj)=>{
         return (
           <div
-            style={{
-              backgroundColor: "#FCF8E8",
-              padding: "5px 10px",
-              margin: "5px",
-              borderRadius: "5px",
-              letterSpacing: "2px",
-              overflow: "hidden",
-            }}
+            className={(commentObj.userId===auth.currentUser.uid)?"sent--comment":"recieved--comment"}
           >
-            <p>img</p>
-            <p>{comment}</p>
-            <button className="resolve--btn">Resolve</button>
+            <div>
+            <img style={{height:"50px",width:"50px",borderRadius:"50%"}} src={commentObj.photoURL} />
+            <p>{commentObj.userName}</p>
+            </div>
+            <p>{commentObj.comment}</p>
+            {(commentObj.userId===auth.currentUser.uid) &&<button className="resolve--btn">Resolve</button>}
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

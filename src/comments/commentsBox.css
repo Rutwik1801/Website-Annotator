@@ -86,3 +86,24 @@
      width: 100%;
   border-radius: 0 0 5px 5px;
  }
+
+ .recieved--comment{
+    background-color: #FCF8E8;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    letter-spacing : 2px;
+    overflow: hidden;
+    width:70%;
+ }
+
+ .sent--comment{
+    background-color: #2962ff;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    letter-spacing : 2px;
+    overflow: hidden;
+    width:70%;
+    align-self: flex-end;
+ }
