@@ -5,7 +5,7 @@ import { db } from "./firebase";
 export const SendBoxData=async (boxObject)=>{
     try {
         const docRef = await addDoc(collection(db, "boxes"), {
-         ...boxObject
+          ...boxObject,
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {

@@ -27,6 +27,7 @@ export default function CommentsBox(props){
       })
       setComments(temp)
       console.log(comments)
+      console.log("this one comments")
     }
     gets();
   },[]);
@@ -55,11 +56,20 @@ export default function CommentsBox(props){
         </button>
       </form>
       {comments.map(({id,comment})=>{
-        return(
-          <div  style={{ backgroundColor: "#FCF8E8" ,padding:"5px 10px",margin:"5px",borderRadius:"5px",letterSpacing:"2px",overflow:"hidden"}}>
+        return (
+          <div
+            style={{
+              backgroundColor: "#FCF8E8",
+              padding: "5px 10px",
+              margin: "5px",
+              borderRadius: "5px",
+              letterSpacing: "2px",
+              overflow: "hidden",
+            }}
+          >
             <p>img</p>
             <p>{comment}</p>
-            <button className='resolve--btn'>Resolve</button>
+            <button className="resolve--btn">Resolve</button>
           </div>
         );
       })}

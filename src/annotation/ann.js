@@ -1,10 +1,15 @@
 import React,{useState,useEffect} from 'react'
 import "./annote.css"
 import CommentsBox from '../comments/commentsBox';
-import { collection, addDoc,getDocs,doc,deleteDoc } from "firebase/firestore"; 
-import { db } from '../utils/firebase';
-import { SendCommentData,GetCommentData, SendBoxData, GetBoxData, DeleteComment } from '../utils/AsyncFunctions';
-
+import { collection,getDocs } from "firebase/firestore"; 
+import  { db } from '../utils/firebase';
+import { SendCommentData,GetCommentData, SendBoxData, GetBoxData } from '../utils/AsyncFunctions';
+// auth------
+import { signInWithPopup, GoogleAuthProvider,getAuth,signOut } from "firebase/auth";
+import { auth,provider } from '../utils/firebase';
+import SignOut from '../auth/Signout';
+import SignIn from '../auth/SignIn';
+// ========================
 export default function Ann(props) {
 
     const [animationInProgress,setAnimationInProgress]=useState();
@@ -22,6 +27,9 @@ export default function Ann(props) {
     const [animation,setAnimation]=useState("");
     let [allBoxes,setAllBoxes]=useState([]);
 
+    // login auth state
+    const [user,setUser]=useState()
+    // ==========================
 
 // load all boxes when the site loads
 useEffect(()=>{
@@ -35,9 +43,47 @@ useEffect(()=>{
   }
   // return temp;
 gets();
-},[allBoxes])
+},[])
+  
   //  =============================
 
+
+// auth -------------------
+// signIn
+const handleSignIn=async ()=>{
+  signInWithPopup(auth, provider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const authData = result.user;
+    setUser(authData)
+    console.log(authData)
+    // ...
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  });
+}
+// =============
+// signout---------
+const handleSignOut=()=>{
+  signOut(auth).then(() => {
+    // Sign-out successful.
+    setUser()
+  }).catch((error) => {
+    // An error happened.
+    console.log(error)
+  });
+}
+// =====================
 
    const handleTransformBox=()=> {
         if(flag){
@@ -173,91 +219,100 @@ gets();
 
   return (
     <div>
-    <div
-     style={{ height: "inherit", width: "inherit" }}
-     onMouseLeave={() => {
-       closeSelectionBox();
-     }}
-     onMouseDown={e => handleMouseDown(e)}
-     onMouseUp={() => closeSelectionBox()}
-     onMouseMove={evt => {
-       if (hold && !selectionBox) {
-         if (props.onMouseDown) props.onMouseDown();
-         setSelectionBox(true)
-       }
-       if (selectionBox && !animationInProgress) {
-        setSelectionBoxTarget([evt.nativeEvent.pageX, evt.nativeEvent.pageY]);
+      <div
+        style={{ height: "inherit", width: "inherit" }}
+        onMouseLeave={() => {
+          closeSelectionBox();
+        }}
+        onMouseDown={(e) => handleMouseDown(e)}
+        onMouseUp={() => closeSelectionBox()}
+        onMouseMove={(evt) => {
+          if (hold && !selectionBox) {
+            if (props.onMouseDown) props.onMouseDown();
+            setSelectionBox(true);
+          }
+          if (selectionBox && !animationInProgress) {
+            setSelectionBoxTarget([
+              evt.nativeEvent.pageX,
+              evt.nativeEvent.pageY,
+            ]);
 
-         props.onSelect(evt, {
-           origin: selectionBoxOrigin,
-           target: selectionBoxTarget
-         });
-       }
-     }}
-   >
-     {selectionBox && (
-       <div
-         className={`react-rectangle-selection ${animation}`}
-         id={"react-rectangle-selection"}
-         style={Object.assign(baseStyle,props.style)}
-       />
-     )}
-     {props.children}
-     {/* all the boxes created by the user will be displayed--------- */}
-     {allBoxes.map((e,idx)=>{
-        return (
-          <div>
-            <div
-              key={idx}
-              style={{
-                height: e.rectHt,
-                width: e.rectWt,
-                backgroundColor: "rgba(0,0,255,0.1)",
-                border: "2px dashed rgba(0,0,255,0.4)",
-                position: "absolute",
-                zIndex: 10,
-                left: e.x,
-                top: e.y,
-              }}
-            >
-              {!flag && (
-                <div>
-                  {/* <button id={idx} className="comment-btn">Add Comment</button> */}
+            props.onSelect(evt, {
+              origin: selectionBoxOrigin,
+              target: selectionBoxTarget,
+            });
+          }
+        }}
+      >
+        {selectionBox && (
+          <div
+            className={`react-rectangle-selection ${animation}`}
+            id={"react-rectangle-selection"}
+            style={Object.assign(baseStyle, props.style)}
+          />
+        )}
+        {props.children}
+        {/* all the boxes created by the user will be displayed--------- */}
+        {allBoxes.map((e, idx) => {
+          return (
+            <div>
+              <div
+                key={idx}
+                style={{
+                  height: e.rectHt,
+                  width: e.rectWt,
+                  backgroundColor: "rgba(0,0,255,0.1)",
+                  border: "2px dashed rgba(0,0,255,0.4)",
+                  position: "absolute",
+                  zIndex: 10,
+                  left: e.x,
+                  top: e.y,
+                }}
+              >
+                {!flag && (
+                  <div>
+                    {/* <button id={idx} className="comment-btn">Add Comment</button> */}
 
-                  {/* view comments button */}
-                  <button
-                    id={idx}
-                    className="comment-btn"
-                    onClick={() => {
-                      setViewCommentsFlag(true);
-                      setCommentBoxId(idx);
-                      // handleCommentsBoxFlag(idx)
-                    }}
-                  ></button>
-                </div>
-              )}
+                    {/* view comments button */}
+                    {user && (
+                      <button
+                        id={idx}
+                        className="comment-btn"
+                        onClick={() => {
+                          setViewCommentsFlag(true);
+                          setCommentBoxId(idx);
+                          // handleCommentsBoxFlag(idx)
+                        }}
+                      ></button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        );
-     })}
-     {viewCommentsFlag && <CommentsBox 
-    //  handleAddRepliesToComment={handleAddRepliesToComment}
-     handleBoxCloseClick={handleBoxCloseClick}
-     commentBoxId={commentBoxId} 
-     comments={particularComments} 
-     handleFilterComments={handleFilterComments} 
-     handleResolveComments={handleResolveComments}
-     />}
-     {/* ============================ */}
-   </div>
+          );
+        })}
+        {viewCommentsFlag && (
+          <CommentsBox
+            handleBoxCloseClick={handleBoxCloseClick}
+            commentBoxId={commentBoxId}
+            comments={particularComments}
+            handleFilterComments={handleFilterComments}
+            handleResolveComments={handleResolveComments}
+          />
+        )}
+        {/* ============================ */}
+      </div>
 
-   <button className="annotation-trigger--btn" 
-    onClick={()=>{
-        setFlag(!flag)
-        }}>
-     {flag?"Stop Annotation":"Start Annotation"}
-   </button>
-
-   </div>
-  )
+      <button
+        className="annotation-trigger--btn"
+        onClick={() => {
+          setFlag(!flag);
+        }}
+      >
+        {flag ? "Stop Annotation" : "Start Annotation"}
+      </button>
+      {!user && <SignIn handleSignIn={handleSignIn} />}
+      {user && <SignOut handleSignOut={handleSignOut} />}
+    </div>
+  );
 }
