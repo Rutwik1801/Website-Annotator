@@ -1,8 +1,48 @@
-This is a Website-Annotation Library Built on top of React.
-Install it in any React Project and get going with a few lines of Code.
 
-###App.js
+# Website Annotator
 
+Easy to use react website annotation library. Incorporate Annotation function in just few
+Line of Code.
+
+
+## Installation
+
+Install my-project with npm
+
+```bash
+  npm install annote-react
+```
+    
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/Rutwik1801/Website-Annotator.git
+```
+
+Go to the project directory
+
+```bash
+  cd website-annotator
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm  start
+```
+
+
+## Usage/Examples
+
+```javascript
 import React,{ useState } from 'react';
 import Annote from './annotation/ann';
 function App() {
@@ -33,7 +73,7 @@ function App() {
       }}
     >
     <div className="App" >
-     Your Code
+    //  your Code
     </div>
     </Annote>
   );
@@ -41,5 +81,20 @@ function App() {
 
 export default App;
 
+```
 
-You can set the styles according to the object as shown in the code
+
+
+## Tech Stack
+
+**Frontend:** ReactJs
+
+**Backend:** FireBase
+
+
+## Features
+
+- Annotate all Sections of the Website
+- SignIn
+- Comment and Resolve Issues
+
