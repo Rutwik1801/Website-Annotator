@@ -39,10 +39,11 @@ export const SendCommentData=async (comment,commentBoxId,uniqueCommentId,uid,use
       }
 }
 
-export const GetCommentData=async (id,comment,uniqueCommentId,commentBoxId)=>{
-
+export const GetCommentData=async (id,comment)=>{
+console.log("ghggg")
 }
 export const DeleteComment=async (commentBoxId,uniqueCommentId)=>{
+  console.log('ghthfw')
   await deleteDoc(doc(db, "comments", uniqueCommentId));
 
 }

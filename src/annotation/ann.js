@@ -3,8 +3,10 @@ import "./annote.css"
 import CommentsBox from '../comments/commentsBox';
 import { collection,getDocs } from "firebase/firestore"; 
 import  { db } from '../utils/firebase';
-import { SendCommentData,GetCommentData, SendBoxData, GetBoxData } from '../utils/AsyncFunctions';
+import { SendCommentData,GetCommentData, SendBoxData, GetBoxData, SignInFunction,DeleteComment } from '../utils/AsyncFunctions';
 // auth------
+import { doc, deleteDoc } from "firebase/firestore";
+
 import { signInWithPopup, GoogleAuthProvider,getAuth,signOut } from "firebase/auth";
 import { auth,provider } from '../utils/firebase';
 import SignOut from '../auth/Signout';
@@ -169,47 +171,47 @@ const handleSignOut=()=>{
       };
 
   //  function to filter comments according to the annotation box selected
-      const handleFilterComments= async (id,comment,uniqueCommentId)=>{
-        // send data to firebase
-        SendCommentData(id,comment,uniqueCommentId,commentBoxId);
-        // ================
-        // get data from firebase
-        let allDBComments=await (GetCommentData())
-        // ===========================
-        setAllComments(allDBComments)
-        setParticularComments(allDBComments.filter((e)=>{
-          return(e.commentBoxId===commentBoxId);
-        }));
-      }
+      // const handleFilterComments= async (id,comment,uniqueCommentId)=>{
+      //   // send data to firebase
+      //   SendCommentData(id,comment,uniqueCommentId,commentBoxId);
+      //   // ================
+      //   // get data from firebase
+      //   let allDBComments=await (GetCommentData())
+      //   // ===========================
+      //   setAllComments(allDBComments)
+      //   console.log(";======")
+      //   console.log(allDBComments)
+      //   setParticularComments(allDBComments.filter((e)=>{
+      //     return(e.commentBoxId===commentBoxId);
+      //   }));
+      // }
 // ==================================================================
 
 // delete/resolve a comment
-  const handleResolveComments=async (commentBoxId,uniqueCommentId)=>{
+  const handleResolveComments=async (docId)=>{
 
-    // DeleteComment(commentBoxId,uniqueCommentId);
-    // let data=await GetCommentData();
-    setAllComments(allComments.filter((e)=>{
-      return(e.uniqueCommentId!==uniqueCommentId);
-    }));  
-    // setAllComments(data)
-    // console.log("=====")
-    // console.log(data)
-    setParticularComments(allComments.filter((e)=>{
-      return(e.commentBoxId===commentBoxId);
-    }));   
+    // DeleteComment
+    console.log(`${docId}`)
+    await deleteDoc(doc(db, "comments", `${docId}`));
+
+    // ==================
+
+
+    // // get all the data again
+    // const gets=async()=>{
+    //   const querySnapshot = await getDocs(collection(db, ""));
+    //   let temp=[]
+    //   querySnapshot.forEach((doc) => {
+    //     temp.push({docId:doc.id,
+    //       ...doc.data()});
+    //   });
+    //   setAllBoxes(temp)
+    // }
+    // gets();
+    // // ====================
   }
 
 // ============================
-
-
-
-
-      // const handleCommentsBoxFlag=(idx)=>{
-      //   // console.log(e)
-      //   setViewCommentsFlag(true);
-      //   setCommentId(idx)
-      //   setCommentsFlag(true)
-      // }
 
       // close the comment box when the user clicks on x
       const handleBoxCloseClick=()=>{
@@ -253,9 +255,10 @@ const handleSignOut=()=>{
         )}
         {props.children}
         {/* all the boxes created by the user will be displayed--------- */}
-        {allBoxes.map((e, idx) => {
+        {user && allBoxes.map((e, idx) => {
           return (
             <div>
+              
               <div
                 key={idx}
                 style={{
@@ -271,8 +274,7 @@ const handleSignOut=()=>{
               >
                 {!flag && (
                   <div>
-                    {/* <button id={idx} className="comment-btn">Add Comment</button> */}
-
+                  
                     {/* view comments button */}
                     {user && (
                       <button
@@ -281,10 +283,11 @@ const handleSignOut=()=>{
                         onClick={() => {
                           setViewCommentsFlag(true);
                           setCommentBoxId(idx);
-                          // handleCommentsBoxFlag(idx)
                         }}
                       ></button>
+                      
                     )}
+                    <button style={{color:"red"}}>X</button>
                   </div>
                 )}
               </div>
@@ -297,21 +300,21 @@ const handleSignOut=()=>{
             handleBoxCloseClick={handleBoxCloseClick}
             commentBoxId={commentBoxId}
             comments={particularComments}
-            handleFilterComments={handleFilterComments}
+            // handleFilterComments={handleFilterComments}
             handleResolveComments={handleResolveComments}
           />
         )}
         {/* ============================ */}
       </div>
 
-      <button
+      {user && <button
         className="annotation-trigger--btn"
         onClick={() => {
           setFlag(!flag);
         }}
       >
-        {flag ? "Stop Annotation" : "Start Annotation"}
-      </button>
+       {flag ? "Stop Annotation" : "Start Annotation"}
+      </button>}
       {!user && <SignIn handleSignIn={handleSignIn} />}
       {user && <SignOut handleSignOut={handleSignOut} />}
     </div>

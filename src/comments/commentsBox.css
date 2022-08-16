@@ -12,6 +12,7 @@
     background-color: white;
     border: 1px solid #2962ff;
     backdrop-filter: blur;
+    overflow: hidden;
     overflow-y: scroll;
     border-radius: 10px;
 }
@@ -37,13 +38,19 @@
 
 .resolve--btn{
     font-family: monospace;
-    background-color:#9AE66E;
+    background-color:#224B0C;
     border: none;
     color: white;
     letter-spacing: 2px;
-    border-radius: 4px;
+    border-radius: 4px 0 4px 4px;
     padding: 6px 10px;
+    /* backface-visibility: hidden; */
 }
+
+/* .resolve--btn:hover{
+    opacity: 0.9;
+    transition: all 0.2s;
+} */
 
 .view-replies--btn{
     font-family: monospace;
@@ -89,19 +96,25 @@
 
  .recieved--comment{
     background-color: #FCF8E8;
-    padding: 5px 10px;
+    padding: 20px 25px;
     margin: 5px;
-    border-radius: 5px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     letter-spacing : 2px;
     overflow: hidden;
     width:70%;
  }
 
  .sent--comment{
-    background-color: #2962ff;
-    padding: 5px 10px;
+    background-color: #A5C9CA;
+    padding: 20px 25px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 0;
     margin: 5px;
-    border-radius: 5px;
     letter-spacing : 2px;
     overflow: hidden;
     width:70%;

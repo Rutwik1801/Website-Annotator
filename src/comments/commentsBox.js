@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { getDocs,collection, orderBy } from 'firebase/firestore';
+import { getDocs,collection, orderBy, doc } from 'firebase/firestore';
 import { auth, db } from '../utils/firebase';
 import "./commentsBox.css";
-import { SendCommentData } from '../utils/AsyncFunctions';
+import { DeleteComment, SendCommentData } from '../utils/AsyncFunctions';
 
 export default function CommentsBox(props){
   const [comments,setComments]=useState([]);
@@ -23,11 +23,12 @@ export default function CommentsBox(props){
       let temp=[];
       querySnapshot.forEach((e)=>{
         if(e.data().commentBoxId===props.commentBoxId)
-        temp.push(e.data());
+        temp.push({docId:e.id
+          ,...e.data()});
       })
       setComments(temp)
       console.log(temp)
-      console.log("this one comments")
+      // console.log("this one comments")
     }
     gets();
   },[]);
@@ -38,12 +39,18 @@ export default function CommentsBox(props){
     SendCommentData(comment,props.commentBoxId,uuidv4(),props.user.uid,props.user.displayName,props.user.photoURL)
   }
   // ===========================
+
+const handleResolveClick=async (e)=>{
+  // console.log("e.target.id")
+   props.handleResolveComments(e.target.id);
+}
+
   return (
     <div className='main-comments--div'>
          <button className="btn-close" onClick={handleBoxCloseClick}>
         X
       </button>
-      <form onSubmit={handleSendComment}>
+      <form onSubmit={handleSendComment} style={{overflow:"hidden",marginBottom:"40px"}}>
       <input
           className="add-comment--input"
           type="text"
@@ -61,12 +68,10 @@ export default function CommentsBox(props){
           <div
             className={(commentObj.userId===auth.currentUser.uid)?"sent--comment":"recieved--comment"}
           >
-            <div>
-            <img style={{height:"50px",width:"50px",borderRadius:"50%"}} src={commentObj.photoURL} />
-            <p>{commentObj.userName}</p>
-            </div>
+            {<img style={{height:"50px",width:"50px",borderRadius:"50%",border:"2px solid #224B0C"}} src={commentObj.photoURL}/>}
+            <p style={{fontWeight:"bold"}}>{commentObj.userName}</p>
             <p>{commentObj.comment}</p>
-            {(commentObj.userId===auth.currentUser.uid) &&<button className="resolve--btn">Resolve</button>}
+            {(commentObj.userId===auth.currentUser.uid) &&<button id={commentObj.docId} className="resolve--btn" onClick={(e)=>{handleResolveClick(e)}}>Resolve</button>}
           </div>
         );
       })}
