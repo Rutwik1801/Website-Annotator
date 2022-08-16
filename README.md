@@ -10,7 +10,7 @@ Line of Code.
 Install my-project with npm
 
 ```bash
-  npm install annote-react
+  npm install react-annote
 ```
     
 ## Run Locally
