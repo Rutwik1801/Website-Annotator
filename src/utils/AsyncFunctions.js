@@ -5,7 +5,8 @@ import { db } from "./firebase";
 export const SendBoxData=async (boxObject)=>{
     try {
         const docRef = await addDoc(collection(db, "boxes"), {
-          ...boxObject,
+          ...boxObject
+          // boxDociId:docRef.id
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
@@ -18,7 +19,8 @@ export const GetBoxData=async ()=>{
     const querySnapshot = await getDocs(collection(db, "boxes"));
     let temp=[]
     querySnapshot.forEach((doc) => {
-      temp.push(doc.data());
+      temp.push({boxDocId:doc.id,
+        ...doc.data()});
     });
     return temp;
 }

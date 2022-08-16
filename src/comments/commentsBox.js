@@ -1,80 +1,120 @@
 import React,{useState,useEffect} from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { getDocs,collection, orderBy, doc } from 'firebase/firestore';
+import { getDocs,collection, orderBy } from 'firebase/firestore';
 import { auth, db } from '../utils/firebase';
 import "./commentsBox.css";
-import { DeleteComment, SendCommentData } from '../utils/AsyncFunctions';
+import { SendCommentData } from '../utils/AsyncFunctions';
 
 export default function CommentsBox(props){
-  const [comments,setComments]=useState([]);
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
 
   const handleBoxCloseClick = () => {
     props.handleBoxCloseClick();
   };
-    const handleChange = (e) => {
-      setComment(e.target.value);
-    };
+  const handleChange = (e) => {
+    setComment(e.target.value);
+  };
 
-    // load all comments when site loads
-  useEffect(()=>{
-    const gets=async()=>{
-      const querySnapshot= await getDocs(collection(db, "comments"),orderBy("createdAt","desc"));
-      let temp=[];
-      querySnapshot.forEach((e)=>{
-        if(e.data().commentBoxId===props.commentBoxId)
-        temp.push({docId:e.id
-          ,...e.data()});
-      })
-      setComments(temp)
-      console.log(temp)
-      // console.log("this one comments")
-    }
+  // load all comments when site loads
+  useEffect(() => {
+    const gets = async () => {
+      const querySnapshot = await getDocs(
+        collection(db, "comments"),
+        orderBy("createdAt", "desc")
+      );
+      let temp = [];
+      querySnapshot.forEach((e) => {
+        if (e.data().commentBoxId === props.commentBoxId)
+          temp.push({docId: e.id, ...e.data() });
+      });
+      setComments(temp);
+      console.log(temp);
+    };
     gets();
-  },[]);
-// =============================
-// async call to send typed comment
-  const handleSendComment=async (e)=>{
+  }, []);
+  // =============================
+  // async call to send typed comment
+  const handleSendComment = async (e) => {
     e.preventDefault();
-    SendCommentData(comment,props.commentBoxId,uuidv4(),props.user.uid,props.user.displayName,props.user.photoURL)
-  }
+    SendCommentData(
+      comment,
+      props.commentBoxId,
+      uuidv4(),
+      props.user.uid,
+      props.user.displayName,
+      props.user.photoURL
+    );
+  };
   // ===========================
 
-const handleResolveClick=async (e)=>{
-  // console.log("e.target.id")
-   props.handleResolveComments(e.target.id);
-}
+  const handleResolveClick = async (e) => {
+    props.handleResolveComments(e.target.id);
+  };
 
   return (
-    <div className='main-comments--div'>
-         <button className="btn-close" onClick={handleBoxCloseClick}>
+    <div className="main-comments--div">
+      <button className="btn-close" onClick={handleBoxCloseClick}>
         X
       </button>
-      <form onSubmit={handleSendComment} style={{overflow:"hidden",marginBottom:"40px"}}>
-      <input
+      <form
+        onSubmit={handleSendComment}
+        style={{ overflow: "hidden", marginBottom: "40px" }}
+      >
+        <input
           className="add-comment--input"
           type="text"
           placeholder="type your comment"
           value={comment}
           onChange={handleChange}
         />
-        <button className="add-comment--btn" type='submit'>
+        <button className="add-comment--btn" type="submit">
           Post Comment
         </button>
       </form>
-      <div style={{display:"flex",flexDirection:"column-reverse",alignItems:"flex-start"}}>
-      {comments.map((commentObj)=>{
-        return (
-          <div
-            className={(commentObj.userId===auth.currentUser.uid)?"sent--comment":"recieved--comment"}
-          >
-            {<img style={{height:"50px",width:"50px",borderRadius:"50%",border:"2px solid #224B0C"}} src={commentObj.photoURL}/>}
-            <p style={{fontWeight:"bold"}}>{commentObj.userName}</p>
-            <p>{commentObj.comment}</p>
-            {(commentObj.userId===auth.currentUser.uid) &&<button id={commentObj.docId} className="resolve--btn" onClick={(e)=>{handleResolveClick(e)}}>Resolve</button>}
-          </div>
-        );
-      })}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column-reverse",
+          alignItems: "flex-start",
+        }}
+      >
+        {comments.map((commentObj) => {
+          return (
+            <div
+              className={
+                commentObj.userId === auth.currentUser.uid
+                  ? "sent--comment"
+                  : "recieved--comment"
+              }
+            >
+              {
+                <img
+                  style={{
+                    height: "50px",
+                    width: "50px",
+                    borderRadius: "50%",
+                    border: "2px solid #224B0C",
+                  }}
+                  src={commentObj.photoURL}
+                />
+              }
+              <p style={{ fontWeight: "bold" }}>{commentObj.userName}</p>
+              <p>{commentObj.comment}</p>
+              {commentObj.userId === auth.currentUser.uid && (
+                <button
+                  id={commentObj.docId}
+                  className="resolve--btn"
+                  onClick={(e) => {
+                    handleResolveClick(e);
+                  }}
+                >
+                  Resolve
+                </button>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
