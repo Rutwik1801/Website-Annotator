@@ -8,7 +8,7 @@ Line of Code.
 ## Installation
 
 Install my-project with npm
-
+There are some issues with npm installation...Try using git clone instead
 ```bash
   npm install react-annote
 ```
