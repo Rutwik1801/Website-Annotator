@@ -6,7 +6,7 @@ import { Auth,getAuth ,GoogleAuthProvider} from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
+  apiKey:"AIzaSyCbFD1GQaXXXLaP8vL--nw7n_XuiRr6p3k",
   authDomain: "website-annotator.firebaseapp.com",
   projectId: "website-annotator",
   storageBucket: "website-annotator.appspot.com",

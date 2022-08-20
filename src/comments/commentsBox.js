@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { getDocs,collection, orderBy } from 'firebase/firestore';
+import { getDocs,collection, orderBy,deleteDoc,doc } from 'firebase/firestore';
 import { auth, db } from '../utils/firebase';
 import "./commentsBox.css";
 import { SendCommentData } from '../utils/AsyncFunctions';
@@ -31,8 +31,9 @@ export default function CommentsBox(props){
       setComments(temp);
       console.log(temp);
     };
+    console.log("hgoeirgergh")
     gets();
-  }, []);
+  }, [setComments]);
   // =============================
   // async call to send typed comment
   const handleSendComment = async (e) => {
@@ -45,11 +46,36 @@ export default function CommentsBox(props){
       props.user.displayName,
       props.user.photoURL
     );
+    // get all comments again
+    const querySnapshot = await getDocs(
+      collection(db, "comments"),
+      orderBy("createdAt", "desc")
+    );
+    let temp = [];
+    querySnapshot.forEach((e) => {
+      if (e.data().commentBoxId === props.commentBoxId)
+        temp.push({docId: e.id, ...e.data() });
+    });
+    setComments(temp);
+    setComment("");
+
   };
   // ===========================
 
   const handleResolveClick = async (e) => {
-    props.handleResolveComments(e.target.id);
+    // props.handleResolveComments(e.target.id);
+    await deleteDoc(doc(db, "comments", `${e.target.id}`));
+        // get all comments again
+        const querySnapshot = await getDocs(
+          collection(db, "comments"),
+          orderBy("createdAt", "desc")
+        );
+        let temp = [];
+        querySnapshot.forEach((e) => {
+          if (e.data().commentBoxId === props.commentBoxId)
+            temp.push({docId: e.id, ...e.data() });
+        });
+        setComments(temp);
   };
 
   return (

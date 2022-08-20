@@ -11,14 +11,16 @@ import { signInWithPopup, GoogleAuthProvider,getAuth,signOut } from "firebase/au
 import { auth,provider } from '../utils/firebase';
 import SignOut from "../auth/Signout";
 import SignIn from '../auth/SignIn';
+
 // ========================
+
 export default function Ann(props) {
 
     const [animationInProgress,setAnimationInProgress]=useState();
     const [viewCommentsFlag,setViewCommentsFlag]=useState(false)
     // id of annotation box as a whole
     const [commentBoxId,setCommentBoxId]=useState(-1)
-    // ===================
+    // =================== 
     const [allComments,setAllComments]=useState([])
     const [particularComments,setParticularComments]=useState([])
     const [flag,setFlag]=useState(false)
@@ -27,6 +29,9 @@ export default function Ann(props) {
     const [selectionBoxOrigin,setSelectionBoxOrigin]=useState([0,0]);
     const [selectionBoxTarget,setSelectionBoxTarget]=useState([0,0]);
     const [animation,setAnimation]=useState("");
+    // to stop the overlapping boxes
+    const [once,setOnce]=useState(false)
+    // ========================
     let [allBoxes,setAllBoxes]=useState([]);
 
     // login auth state
@@ -43,10 +48,11 @@ useEffect(()=>{
         ...doc.data()});
     });
     setAllBoxes(temp)
+    console.log("dont")
   }
   // return temp;
 gets();
-},[])
+},[setAllBoxes])
   
   //  =============================
 
@@ -89,6 +95,7 @@ const handleSignOut=()=>{
 // =====================
 
    const handleTransformBox=()=> {
+    console.log("handleTransformBox")
         if(flag){
         //   const { selectionBoxOrigin, selectionBoxTarget } = this.state;
           if (
@@ -106,7 +113,8 @@ const handleSignOut=()=>{
 
 
      const closeSelectionBox=async ()=> {
-        if(flag){
+      console.log("closeSelectionBox")
+        if(flag && once){
       // storing all the selected rectangles----------
     SendBoxData({flag:true,rectHt: Math.abs(
       selectionBoxTarget[1] -selectionBoxOrigin[1] - 1
@@ -130,10 +138,12 @@ const handleSignOut=()=>{
         setAnimationInProgress();
       }, 300);
         }
+        setOnce(false)
       }
     
 
      const  handleMouseDown=(e)=> {
+      setOnce(true);
         if(flag){
         //   if (this.props.disabled) return;
           // let doubleClick = false;
@@ -176,13 +186,20 @@ const handleSignOut=()=>{
    const handleBoxDeleteClick= async (e)=>{
     console.log(e.target.id)
     await deleteDoc(doc(db, "boxes", e.target.id));
+    const querySnapshot = await getDocs(collection(db, "boxes"));
+    let temp=[]
+    querySnapshot.forEach((doc) => {
+      temp.push({boxDocId:doc.id,
+        ...doc.data()});
+    });
+    setAllBoxes(temp)
    }
 
 // delete/resolve a comment
   const handleResolveComments=async (docId)=>{
 
     // DeleteComment
-    await deleteDoc(doc(db, "comments", `${docId}`));
+    // await deleteDoc(doc(db, "comments", `${docId}`));
     // ==================
   }
 

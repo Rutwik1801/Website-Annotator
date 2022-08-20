@@ -28,8 +28,6 @@ function App() {
         borderColor: "5px dotted blue"
       }}
     >
-    <div className="App" >
-    </div>
     </Annote>
   );
 }
